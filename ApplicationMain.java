@@ -112,6 +112,13 @@ public class ApplicationMain {
                     System.out.print("Discard the tile in index: ");
                     playerChoice = sc.nextInt();
 
+                    while(playerChoice > 14 || playerChoice < 0){
+                        System.out.println("Invalid entry. You should be entered between 0 and 14.");
+                        System.out.println("Which tile you will discard?");
+                        System.out.print("Discard the tile in index: ");
+                        playerChoice = sc.nextInt();
+                    }
+
                     // TODO: make sure the given index is correct, should be 0 <= index <= 14
 
                     game.discardTile(playerChoice);
