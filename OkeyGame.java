@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class OkeyGame {
 
     Player[] players;
@@ -33,7 +35,21 @@ public class OkeyGame {
      * this method assumes the tiles are already sorted
      */
     public void distributeTilesToPlayers() {
-
+        int tilecounter = 0;
+        for (int i = 0; i < 15; i++) {
+            players[0].playerTiles[i] = tiles[tilecounter];
+            tiles[tilecounter] = null;
+            players[0].numberOfTiles++;
+            tilecounter++;
+        }
+        for (int i = 1; i < 4; i++) {
+            for (int k = 0; k < 14; k++) {
+                players[i].playerTiles[k] = tiles[tilecounter];
+                tiles[tilecounter] = null;
+                players[i].numberOfTiles++;
+                tilecounter++;
+            }
+        }
     }
 
     /*
@@ -42,7 +58,15 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getLastDiscardedTile() {
-        return null;
+        int currPlayer = getCurrentPlayerIndex();
+
+        for (int i = 0; i < players[currPlayer].playerTiles.length; i++) {
+            if (players[currPlayer].playerTiles[i] == null) {
+                players[currPlayer].playerTiles[i] = lastDiscardedTile;
+                return lastDiscardedTile.toString();
+            }
+        }
+        return "Error";
     }
 
     /*
@@ -51,14 +75,33 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getTopTile() {
-        return null;
+        int currPlayer = getCurrentPlayerIndex();
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] != null) {
+                for (int k = 0; k < players[currPlayer].playerTiles.length; k++) {
+                    if (players[currPlayer].playerTiles[k] == null) {
+                        players[currPlayer].playerTiles[k] = tiles[i];
+                        tiles[i] = null;
+                        return players[currPlayer].playerTiles[k].toString();
+                    }
+                }
+
+            }
+        }
+        return "Error";
     }
 
     /*
      * TODO: should randomly shuffle the tiles array before game starts
      */
     public void shuffleTiles() {
-
+        Random rand = new Random();
+        for (int i = tiles.length - 1; i > 0; i--) {
+            int randomIndex = rand.nextInt(i + 1);
+            Tile temp = tiles[i];
+            tiles[i] = tiles[randomIndex];
+            tiles[randomIndex] = temp;
+        }
     }
 
     /*
