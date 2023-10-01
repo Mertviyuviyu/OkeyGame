@@ -77,7 +77,13 @@ public class Player {
      * TODO: removes and returns the tile in given index
      */
     public Tile getAndRemoveTile(int index) {
-        return null;
+        //return null;
+        Tile temp;
+        temp = playerTiles[index];
+        playerTiles[index] = null;
+        return temp;
+        
+        
     }
 
     /*
@@ -86,7 +92,10 @@ public class Player {
      * have more than 15 tiles at a time
      */
     public void addTile(Tile t) {
-
+        if( numberOfTiles < 15){
+            playerTiles[numberOfTiles] = t;
+            numberOfTiles++;
+        }
     }
 
     /*

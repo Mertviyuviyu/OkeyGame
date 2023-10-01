@@ -37,16 +37,16 @@ public class OkeyGame {
     public void distributeTilesToPlayers() {
         int tilecounter = 0;
         for (int i = 0; i < 15; i++) {
-            players[0].playerTiles[i] = tiles[tilecounter];
+            players[0].addTile( tiles[tilecounter]); //players[0].playerTiles[i] = tiles[tilecounter];
             tiles[tilecounter] = null;
-            players[0].numberOfTiles++;
+            //players[0].numberOfTiles++;
             tilecounter++;
         }
         for (int i = 1; i < 4; i++) {
             for (int k = 0; k < 14; k++) {
-                players[i].playerTiles[k] = tiles[tilecounter];
+                players[i].addTile( tiles[tilecounter]);//players[i].playerTiles[k] = tiles[tilecounter];
                 tiles[tilecounter] = null;
-                players[i].numberOfTiles++;
+                //players[i].numberOfTiles++;
                 tilecounter++;
             }
         }
@@ -59,12 +59,14 @@ public class OkeyGame {
      */
     public String getLastDiscardedTile() {
         int currPlayer = getCurrentPlayerIndex();
-
+        // Player.java daki getAndRemove methodu kullanılabilir(?)
         for (int i = 0; i < players[currPlayer].playerTiles.length; i++) {
-            if (players[currPlayer].playerTiles[i] == null) {
+            
+            
+             if (players[currPlayer].playerTiles[i] == null) {
                 players[currPlayer].playerTiles[i] = lastDiscardedTile;
                 return lastDiscardedTile.toString();
-            }
+            } 
         }
         return "Error";
     }
@@ -76,18 +78,31 @@ public class OkeyGame {
      */
     public String getTopTile() {
         int currPlayer = getCurrentPlayerIndex();
+        // Player.javadaki addTile methodu kullanılabilir (?) 
         for (int i = 0; i < tiles.length; i++) {
             if (tiles[i] != null) {
-                for (int k = 0; k < players[currPlayer].playerTiles.length; k++) {
+                /*for (int k = 0; k < players[currPlayer].playerTiles.length; k++) {
                     if (players[currPlayer].playerTiles[k] == null) {
                         players[currPlayer].playerTiles[k] = tiles[i];
                         tiles[i] = null;
                         return players[currPlayer].playerTiles[k].toString();
                     }
+                    
+                    }*/
+                    
+                    //Ben böyle düşündüm duruma göre commentleri kaldırıp değiştiririz. -A.K
+                    
+                        players[currPlayer].addTile( tiles[i]); //addTile sonuna ekletiyor ama array elementleri ona göre yer kayar ?
+                        Tile temp;
+                        temp = tiles[i];
+                        tiles[i] = null;
+                        return temp.toString();
+                        // i == tiles.length ( bu olmazsa sanırım loop'a girecek sürekli elemen ekleyeceğinden)
+                    
                 }
 
             }
-        }
+        
         return "Error";
     }
 
@@ -117,7 +132,28 @@ public class OkeyGame {
      * for this simplified version
      */
     public boolean didGameFinish() {
+        int currPlayer = getCurrentPlayerIndex();
+        int[] temp =  players[currPlayer].calculateLongestChainPerTile();
+        int num5 = 0;
+        int num4 = 0;
+        int num3 = 0;
+        for ( int i = 0; i < players[currPlayer].numberOfTiles; i ++) {
+            if ( temp[i] == 5 ) 
+            num5++;
+            
+            else if ( temp[i] == 4 )
+            num4++;
+            
+            else if ( temp[i] == 3 ) 
+            num3++;
+            
+        }
+        if ( (num5 == 5 && num3 == 9) || (num4 == 8 & num3 == 6))  {
+        return true;
+        }
+        else 
         return false;
+        
     }
 
     /*
@@ -149,7 +185,7 @@ public class OkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        // Player.javadaki getAndRemove methodu kullanılabilir (?)
     }
 
     public void currentPlayerSortTilesColorFirst() {
