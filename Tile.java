@@ -19,6 +19,9 @@ public class Tile {
      * return true if they are matching, false otherwise
      */
     public boolean matchingTiles(Tile t) {
+        if(t.getValue()==getValue()&&t.getColor()==getColor()){
+            return true;
+        }
         return false;
     }
 

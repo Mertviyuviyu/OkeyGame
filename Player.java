@@ -6,11 +6,13 @@ public class Player {
     public Player(String name) {
         setName(name);
         playerTiles = new Tile[15]; // there are at most 15 tiles a player owns at any time
-        numberOfTiles = 0; // currently this player owns 0 tiles, will pick tiles at the beggining of the game
+        numberOfTiles = 0; // currently this player owns 0 tiles, will pick tiles at the beggining of the
+                           // game
     }
 
     /*
-     * This method calculates the longest chain per tile to be used when checking the win condition
+     * This method calculates the longest chain per tile to be used when checking
+     * the win condition
      */
     public int[] calculateLongestChainPerTile() {
         // keep a seperate copy of the tiles since findLongestChainOf sorts them
@@ -41,12 +43,17 @@ public class Player {
      * 1B 2B 3B
      * 5Y 5B 5R 5K
      * 4Y 5Y 6Y 7Y 8Y
-     * You can use canFormChainWith method in Tile class to check if two tiles can make a chain
-     * based on color order and value order. Use sortTilesColorFirst() and sortTilesValueFirst()
-     * methods to sort the tiles of this player then find the position of the given tile t.
+     * You can use canFormChainWith method in Tile class to check if two tiles can
+     * make a chain
+     * based on color order and value order. Use sortTilesColorFirst() and
+     * sortTilesValueFirst()
+     * methods to sort the tiles of this player then find the position of the given
+     * tile t.
      * check how many adjacent tiles there are starting from the tile poisition.
-     * Note that if you start a chain with matching colors it should continue with the same type of match
-     * and if you start a chain with matching values it should continue with the same type of match
+     * Note that if you start a chain with matching colors it should continue with
+     * the same type of match
+     * and if you start a chain with matching values it should continue with the
+     * same type of match
      * use the different values canFormChainWith method returns.
      */
     public int findLongestChainOf(Tile t) {
@@ -60,15 +67,13 @@ public class Player {
 
         sortTilesValueFirst();
         tilePosition = findPositionOfTile(t);
-        
+
         // TODO: find the longest chain starting from tilePosition going left and right
         int longestChainValueFirst = 0;
 
-
-        if(longestChainColorFirst > longestChainValueFirst) {
+        if (longestChainColorFirst > longestChainValueFirst) {
             return longestChainColorFirst;
-        }
-        else{
+        } else {
             return longestChainValueFirst;
         }
     }
@@ -108,7 +113,16 @@ public class Player {
      * you are allowed to use Collections.sort method
      */
     public void sortTilesColorFirst() {
-        
+        for (int i = 0; i < playerTiles.length; i++) {
+            for (int j = 1; j < playerTiles.length - i; j++) {
+                if (playerTiles[j-1].compareToColorFirst(playerTiles[j ]) == -1) {
+                    Tile temp = playerTiles[j];
+                    playerTiles[j] = playerTiles[j - 1];
+                    playerTiles[j - 1] = temp;
+                }
+            }
+        }
+
     }
 
     /*
@@ -121,13 +135,21 @@ public class Player {
      * you are allowed to use Collections.sort method
      */
     public void sortTilesValueFirst() {
-
+        for (int i = 0; i < playerTiles.length; i++) {
+            for (int j = 1; j < playerTiles.length - i; j++) {
+                if (playerTiles[j-1].compareToValueFirst(playerTiles[j ]) == -1) {
+                    Tile temp = playerTiles[j];
+                    playerTiles[j] = playerTiles[j - 1];
+                    playerTiles[j - 1] = temp;
+                }
+            }
+        }
     }
 
     public int findPositionOfTile(Tile t) {
         int tilePosition = -1;
         for (int i = 0; i < numberOfTiles; i++) {
-            if(playerTiles[i].matchingTiles(t)) {
+            if (playerTiles[i].matchingTiles(t)) {
                 tilePosition = i;
             }
         }
@@ -153,4 +175,5 @@ public class Player {
     public String getName() {
         return playerName;
     }
+   
 }
